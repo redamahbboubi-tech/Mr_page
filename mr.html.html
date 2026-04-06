@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Romantic Love - For Mariam ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  margin:0;
+  overflow:hidden;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  font-family:'Arial','Segoe UI',sans-serif;
+  color:white;
+  position:relative;
+  background:linear-gradient(-45deg,#ff4d6d,#ff9a9e,#fad0c4,#ffdde1);
+  background-size:400% 400%;
+  animation:bgMove 10s ease infinite;
+}
+@keyframes bgMove {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+.heart {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  transform: rotate(-45deg);
+  transform-style: preserve-3d;
+  animation: beat 1.2s ease-in-out infinite, glowHeart 2s ease-in-out infinite alternate;
+  cursor:pointer;
+  perspective:500px;
+  transition: transform 0.3s;
+}
+.heart:hover { transform: rotate(-45deg) scale(1.15); }
+.heart::before,.heart::after {
+  content:"";
+  position:absolute;
+  width:100px;
+  height:100px;
+  background:linear-gradient(145deg,#ff2e63,#ff6b8a);
+  border-radius:50%;
+  box-shadow:0 5px 20px rgba(255,46,99,0.6),inset 0 -5px 10px rgba(255,255,255,0.3);
+  transform: translateZ(10px);
+}
+.heart::before { top:-50px; left:0; }
+.heart::after { left:50px; top:0; }
+
+@keyframes beat {0%,100%{transform:rotate(-45deg) scale(1);}50%{transform:rotate(-45deg) scale(1.15);}}
+@keyframes glowHeart {0%{box-shadow:0 5px 20px rgba(255,46,99,0.4),0 0 30px rgba(255,46,99,0.2);}50%{box-shadow:0 10px 25px rgba(255,46,99,0.8),0 0 40px rgba(255,46,255,0.3);}100%{box-shadow:0 5px 20px rgba(255,46,99,0.4),0 0 30px rgba(255,46,99,0.2);}}
+
+.text { margin-top:50px; font-size:2.5rem; font-weight:bold; animation:glow 1.5s infinite alternate; text-align:center; text-shadow:2px 2px 4px rgba(0,0,0,0.3); padding:0 20px;}
+@keyframes glow { from{text-shadow:0 0 10px white,0 0 20px #ff2e63;} to{text-shadow:0 0 30px #ff1a4d,0 0 40px #ff6b8a;} }
+.subtext { margin-top:20px; font-size:1.2rem; opacity:0.9; animation:fadeInUp 2s ease;}
+@keyframes fadeInUp {from{opacity:0;transform:translateY(20px);} to{opacity:0.9;transform:translateY(0);} }
+
+/* جزيئات الانفجار */
+.particle {
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:linear-gradient(45deg,#ff2e63,#ff6b8a);
+  border-radius:50%;
+  pointer-events:none;
+  animation:explode 0.8s forwards;
+}
+@keyframes explode { to { transform: translate(var(--x), var(--y)) scale(0); opacity:0; } }
+
+/* فراشات */
+.butterfly { position:absolute; font-size:28px; pointer-events:none; z-index:100; animation:fly linear infinite; filter:drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+@keyframes fly { 0%{transform:translateY(100vh) translateX(0) rotate(0deg); opacity:1;} 50%{transform:translateY(50vh) translateX(50px) rotate(20deg);} 100%{transform:translateY(-10vh) translateX(100px) rotate(40deg); opacity:0;} }
+
+/* نجوم */
+.star { position:absolute; width:3px; height:3px; background:white; border-radius:50%; animation:twinkle 2s infinite alternate; pointer-events:none; box-shadow:0 0 5px white; }
+@keyframes twinkle { from{opacity:0.2; transform:scale(1);} to{opacity:1; transform:scale(1.5);} }
+</style>
+</head>
+<body>
+
+<div class="heart"></div>
+<div class="text">💖 I love you Mariam 💖</div>
+<div class="subtext">You make my world beautiful ✨</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// تشغيل الموسيقى عند أول تفاعل
+let musicStarted=false;
+function startMusic(){if(!musicStarted){document.getElementById('bgMusic').play().catch(e=>console.log(e));musicStarted=true;}}
+document.body.addEventListener('click', startMusic);
+document.body.addEventListener('touchstart', startMusic);
+
+// فراشات
+function createButterfly(){const b=document.createElement("div");b.classList.add("butterfly");const arr=['🦋','🦋','✨','💖','🌸'];b.innerHTML=arr[Math.floor(Math.random()*arr.length)];b.style.left=Math.random()*window.innerWidth+"px";b.style.animationDuration=(4+Math.random()*6)+"s";b.style.animationDelay=Math.random()*2+"s";document.body.appendChild(b);setTimeout(()=>b.remove(),10000);}
+setInterval(createButterfly,600);
+
+// نجوم
+function createStars(){for(let i=0;i<150;i++){const s=document.createElement("div");s.classList.add("star");s.style.left=Math.random()*window.innerWidth+"px";s.style.top=Math.random()*window.innerHeight+"px";s.style.animationDelay=Math.random()*2+"s";s.style.animationDuration=(1+Math.random()*3)+"s";document.body.appendChild(s);}}
+window.addEventListener('load',createStars);
+window.addEventListener('resize',()=>{document.querySelectorAll('.star').forEach(e=>e.remove()); createStars();});
+
+// قلب ينبض وينفجر
+const heart=document.querySelector('.heart');
+heart.addEventListener('click',()=>{
+  heart.style.animation='none';
+  setTimeout(()=>heart.style.animation='beat 1.2s ease-in-out infinite, glowHeart 2s ease-in-out infinite alternate',10);
+  
+  // انفجار الجزيئات
+  const rect=heart.getBoundingClientRect();
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top+rect.height/2;
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='particle';
+    document.body.appendChild(p);
+    const angle=Math.random()*2*Math.PI;
+    const dist=50+Math.random()*50;
+    p.style.left=cx+'px';
+    p.style.top=cy+'px';
+    p.style.setProperty('--x',Math.cos(angle)*dist+'px');
+    p.style.setProperty('--y',Math.sin(angle)*dist+'px');
+    setTimeout(()=>p.remove(),800);
+  }
+});
+</script>
+</body>
+</html>
